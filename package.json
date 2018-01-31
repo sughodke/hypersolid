@@ -1,0 +1,11 @@
+{
+  "name": "hypersolid",
+  "version": "0.0.1",
+  "dependencies": {
+    
+  },
+  "scripts" :
+  {
+    "run" : "tsc"
+  }
+}
