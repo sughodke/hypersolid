@@ -21,6 +21,7 @@ class Viewport {
     private clicked = false;
     private scale: number;
     private checkboxes: any;
+    private animateInterval = -1;
 
     constructor (
         public shape: Shape,
@@ -51,6 +52,8 @@ class Viewport {
         this.document.addEventListener('mousemove', this.mousemove.bind(this));
         this.document.addEventListener('mouseup', this.mouseup.bind(this));
         this.checkboxes.addEventListener('change', this.change.bind(this));
+
+        this.change();
     }
 
     draw() {
@@ -110,14 +113,14 @@ class Viewport {
                 this.context.fillText(i.toString(), adjusted[i].x, adjusted[i].y);
             }
         }
-    };
+    }
 
     mousedown(e) {
         this.startCoords = mouseCoords(e, this.canvas);
         this.startCoords.x -= Math.floor(this.canvas.width / 2);
         this.startCoords.y = Math.floor(this.canvas.height / 2) - this.startCoords.y;
         this.clicked = true;
-    };
+    }
 
     mousemove(e) {
         if (!this.clicked) {
@@ -148,15 +151,29 @@ class Viewport {
         this.startCoords = currCoords;
 
         this.draw();
-    };
+    }
 
     mouseup() {
         this.clicked = false;
-    };
+    }
 
     change() {
+        if (this.checkboxes.animate.checked && this.animateInterval == -1) {
+            this.animateInterval = setInterval(this.animate.bind(this), 30);
+        } else {
+            clearInterval(this.animateInterval);
+            this.animateInterval = -1;
+        }
+
         this.draw();
-    };
+    }
+
+    animate() {
+        this.shape.rotate('xw', Math.PI * 1 / this.bound);
+        this.shape.rotate('yw', Math.PI * 1 / this.bound);
+
+        this.draw();
+    }
 }
 
 
