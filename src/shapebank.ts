@@ -1,5 +1,8 @@
+import { Shape } from './shape';
+
+
 // Hypercube
-let Hypercube = new Shape([
+export const Hypercube = new Shape([
   { x:  1, y:  1, z:  1, w:  1 },
   { x:  1, y:  1, z:  1, w: -1 },
   { x:  1, y:  1, z: -1, w:  1 },
@@ -35,7 +38,7 @@ let Hypercube = new Shape([
 ]);
 
 // 5 cell
-let Simplex = new Shape([
+export const  Simplex = new Shape([
   {"x":0,"y":0,"z":0,"w":2},
   {"x":-1,"y":1,"z":1,"w":0},
   {"x":1,"y":-1,"z":1,"w":0},
@@ -50,7 +53,7 @@ let Simplex = new Shape([
 ]);
 
 // 16 cell
-let Cross = new Shape([
+export const Cross = new Shape([
   {"x":-2,"y":0,"z":0,"w":0},
   {"x":0,"y":-2,"z":0,"w":0},
   {"x":0,"y":0,"z":-2,"w":0},
@@ -71,7 +74,7 @@ let Cross = new Shape([
 ]);
 
 // 24 cell
-let Icositetrachoron = new Shape([
+export const Icositetrachoron = new Shape([
   {x:-2,y:0,z:0,w:0},
   {x:0,y:-2,z:0,w:0},
   {x:0,y:0,z:-2,w:0},

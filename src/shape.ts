@@ -1,15 +1,19 @@
-interface Vertex {
+import { Emittable } from './emit';
+
+
+export interface Vertex {
     x: number;
     y: number;
     z: number;
     w: number;
 }
 
-// Edge: [];
 
 // Multiplication by vector rotation matrices of dimension 4
 // each function is rotating on that plane, with the inputted vector being mutable
 class VectorRotationMatrices {
+    [k: string]: any;
+
     xy(v: Vertex, s: number, c: number) {
         let tmp = c * v.x + s * v.y;
         v.y = -s * v.x + c * v.y;
@@ -47,34 +51,14 @@ class VectorRotationMatrices {
     }
 }
 
-class Emittable {
-    eventCallbacks: {
-        [eventName: string] : ((self: Object) => any)[]
-    } = {};
-
-    on(eventName, callback) {
-        if (!(eventName in this.eventCallbacks)) {
-            this.eventCallbacks[eventName] = [];
-        }
-
-        this.eventCallbacks[eventName].push(callback);
-    }
-
-    triggerEventCallbacks(eventName) {
-        if (eventName in this.eventCallbacks) {
-            this.eventCallbacks[eventName].map(callback => callback.call(self));
-        }
-    }
-}
-
 
 const rotationOrder = ['yz', 'xw', 'yw', 'zw', 'xy', 'xz'];
-class Shape extends Emittable {
+export class Shape extends Emittable {
 
     private rotatedVertices: Vertex[];
 
     // the current rotations about each axis.
-    private rotations = {
+    private rotations : { [key: string]: number } = {
         xy: 0,
         xz: 0,
         xw: 0,
@@ -85,18 +69,15 @@ class Shape extends Emittable {
 
     private rotateVertex = new VectorRotationMatrices();
 
-
-    copyVertices() {
-        this.rotatedVertices = this.shapeVertices.map((v: Vertex) => Object.create(v));
-    }
-
     constructor(public shapeVertices: any[], public edges: any[]) {
         super();
-        // Rotations will always be relative to the original shape to avoid rounding errors.
-        // This is a structure for caching the rotated vertices.
 
-        // this.rotatedVertices = new Array(vertices.length);
         this.copyVertices();
+    }
+
+    // Rotations will always be relative to the original shape to avoid rounding errors.
+    copyVertices() {
+        this.rotatedVertices = this.shapeVertices.map((v: Vertex) => Object.create(v));
     }
 
     get originalVertices() {
@@ -108,21 +89,19 @@ class Shape extends Emittable {
     };
 
     // This will copy the original shape and put a rotated version into rotatedVertices
-    rotate(axis, theta) {
+    rotate(axis: string, theta: number) {
         this.addToRotation(axis, theta);
         this.applyRotations();
         this.triggerEventCallbacks('rotate');
     }
 
-    addToRotation(axis, theta) {
+    addToRotation(axis: string, theta: number) {
         this.rotations[axis] = (this.rotations[axis] + theta) % (2 * Math.PI);
     }
 
     applyRotations() {
         this.copyVertices();
-        // this.rotatedVertices = shapeVertices.map((v: Vertex) => v);
 
-        // let self = this;
         rotationOrder.map(axis => {
             // sin and cos precomputed for efficiency
             let s = Math.sin(this.rotations[axis]);

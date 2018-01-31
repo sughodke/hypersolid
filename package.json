@@ -1,11 +1,14 @@
 {
   "name": "hypersolid",
   "version": "0.0.1",
-  "dependencies": {
-    
+  "dependencies": {},
+  "scripts": {
+    "build": "webpack"
   },
-  "scripts" :
-  {
-    "run" : "tsc"
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.4.1",
+    "source-map-loader": "^0.2.3",
+    "typescript": "^2.6.2",
+    "webpack": "^3.10.0"
   }
 }

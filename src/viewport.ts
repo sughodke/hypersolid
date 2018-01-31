@@ -1,3 +1,5 @@
+import { Shape, Vertex } from './shape';
+
 const DEFAULT_VIEWPORT_WIDTH = 480; // Width of canvas in pixels
 const DEFAULT_VIEWPORT_HEIGHT = 480; // Height of canvas in pixels
 const DEFAULT_VIEWPORT_SCALE = 2; // Maximum distance from origin (in math units) that will be displayed on the canvas
@@ -13,7 +15,7 @@ const DEFAULT_CHECKBOX_VALUES = {
 };
 
 
-class Viewport {
+export class Viewport {
 
     private context : CanvasRenderingContext2D;
     private bound : number;
@@ -112,14 +114,14 @@ class Viewport {
         }
     };
 
-    mousedown(e) {
+    mousedown(e: MouseEvent) {
         this.startCoords = mouseCoords(e, this.canvas);
         this.startCoords.x -= Math.floor(this.canvas.width / 2);
         this.startCoords.y = Math.floor(this.canvas.height / 2) - this.startCoords.y;
         this.clicked = true;
     };
 
-    mousemove(e) {
+    mousemove(e: MouseEvent) {
         if (!this.clicked) {
             return true;
         }
@@ -160,9 +162,9 @@ class Viewport {
 }
 
 
-function mouseCoords(e, element) { // http://answers.oreilly.com/topic/1929-how-to-use-the-canvas-and-draw-elements-in-html5/
-    var x;
-    var y;
+function mouseCoords(e: MouseEvent, element: HTMLElement) { // http://answers.oreilly.com/topic/1929-how-to-use-the-canvas-and-draw-elements-in-html5/
+    let x, y;
+
     if (e.pageX || e.pageY) {
         x = e.pageX;
         y = e.pageY;

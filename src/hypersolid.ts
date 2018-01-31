@@ -23,21 +23,34 @@
  *
  */
 
-class Hypersolid {
-    /* Begin constants. */
 
+import { Shape } from './shape';
+import { Viewport } from './viewport';
+import { Hypercube, Simplex, Cross, Icositetrachoron } from './shapebank';
+
+export class Hypersolid {
+    /* Begin constants. */
+    HyShape = Shape;
+    HyViewport = Viewport;
+    HyShapeBank = {
+        Hypercube: Hypercube,
+        Simplex: Simplex,
+        Cross: Cross,
+        Icositetrachoron: Icositetrachoron
+    };
     /* End constants. */
 
     /* Begin methods. */
 
     // parse ascii files from http://paulbourke.net/geometry/hyperspace/
-    parseVEF(text) {
-        var lines = text.split("\n");
-        var nV = parseInt(lines[0]);  // number of vertices
-        var nE = parseInt(lines[1 + nV]);  // number of edges
-        var nF = parseInt(lines[2 + nV + nE]);  // number of faces
-        var vertices = lines.slice(1, 1 + nV).map(function (line) {
-            var d = line.split("\t").map(parseFloat);
+    parseVEF(text: string) {
+        const lines = text.split("\n");
+        const nV = parseInt(lines[0]);  // number of vertices
+        const nE = parseInt(lines[1 + nV]);  // number of edges
+        const nF = parseInt(lines[2 + nV + nE]);  // number of faces
+
+        const vertices = lines.slice(1, 1 + nV).map(function (line) {
+            let d = line.split("\t").map(parseFloat);
             return {
                 x: d[0],
                 y: d[1],
@@ -45,18 +58,19 @@ class Hypersolid {
                 w: d[3],
             }
         });
-        var edges = lines.slice(2 + nV, 2 + nV + nE).map(function (line) {
-            var d = line.replace("\s", "").split("\t").map(function (vertex) {
+        const edges = lines.slice(2 + nV, 2 + nV + nE).map(function (line) {
+            let d = line.replace("\s", "").split("\t").map(function (vertex) {
                 return parseInt(vertex);
             });
             return [d[0], d[1]];
         });
-        var faces = lines.slice(3 + nV + nE, 3 + nV + nE + nF).map(function (line) {
-            var d = line.replace("\s", "").split("\t").map(function (edge) {
+        const faces = lines.slice(3 + nV + nE, 3 + nV + nE + nF).map(function (line) {
+            let d = line.replace("\s", "").split("\t").map(function (edge) {
                 return parseInt(edge);
             });
             return d;
         });
+
         return [vertices, edges, faces]
     };
 
