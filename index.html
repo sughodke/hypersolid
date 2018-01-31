@@ -4,8 +4,9 @@
 		<meta charset="UTF-8" /> 
 		<title>Hypercube Projection</title>
 		<link rel="stylesheet" type="text/css" href="main.css" />
-		<script type="text/javascript" src="hypersolid.js"></script>
-		<script type="text/javascript" src="hypersolid.shapebank.js"></script>
+		<script type="text/javascript" src="built/shape.js"></script>
+		<script type="text/javascript" src="built/viewport.js"></script>
+		<script type="text/javascript" src="built/shapebank.js"></script>
 	</head>
 	<body>
 		<canvas id="hypercube-canvas">Unfortunately, your browser does not support coolness.</canvas>
@@ -42,9 +43,8 @@
 		</form>
 	<div id="errata">The rotation UI is currently slightly wonky! This is the result of a refactoring and apparently also of my lack of understanding of Gimbal Locks! I am working on it! <div class="sig">Milosz</div></div>
 	<script type="text/javascript">
-	/* <![CDATA[ */ (function() {
-
-		Hypersolid.Viewport(Hypersolid.Hypercube(), document.getElementById('hypercube-canvas'), {
+		mdl = Hypercube;
+		v = new Viewport(mdl, document.getElementById('hypercube-canvas'), document, {
 			checkboxes: document.getElementById('hypercube-options'),
 			width: 480,
 			height: 480,
@@ -53,9 +53,9 @@
 			fontColor: '#000',
 			lineWidth: 4,
 			lineJoin: 'round'
-		}).draw();	
+		});
 
-	})(); // ]]>
+		v.draw();
 	</script>
 	</body>
 </html>
